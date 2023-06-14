@@ -2,103 +2,76 @@
 <html>
   <head>
     <style>
-      body {
-        margin: 0;
-        padding: 0;
-        font-family: Arial, sans-serif;
-      }
-      .container {
+      /* CSS styling for the tabs */
+      .tabs {
         display: flex;
-        flex-direction: column;
-        height: 100vh;
-      }
-      .header {
-        background-color: #333;
-        padding: 10px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: #fff;
-      }
-      .address-bar {
-        display: flex;
-        align-items: center;
         background-color: #f1f1f1;
-        padding: 5px;
-        border: 2px solid #ccc;
-        border-radius: 4px;
+        border-bottom: 1px solid #ccc;
       }
-      .address-bar input[type="text"] {
-        flex-grow: 1;
-        height: 26px;
-        border: none;
-        outline: none;
-        padding: 2px;
-        font-size: 14px;
-      }
-      .address-bar button {
-        height: 30px;
-        margin-left: 5px;
-        padding: 0 10px;
-        font-size: 14px;
-        background-color: #4CAF50;
-        border: none;
-        color: #fff;
+      .tab {
+        padding: 10px;
         cursor: pointer;
+      }
+      .tab.active {
+        background-color: #ccc;
       }
       .web-view {
         flex-grow: 1;
         border: none;
+        height: calc(100vh - 30px); /* Adjust height to accommodate the tabs */
       }
     </style>
   </head>
   <body>
-    <div class="container">
-      <div class="header">
-        <h1>MyWeb Browser</h1>
-      </div>
-      <div class="address-bar">
-        <input type="text" id="url-input" placeholder="Enter URL">
-        <button onclick="loadURL()">Go</button>
-      </div>
-      <iframe class="web-view" id="web-view"></iframe>
-    </div>
+    <div class="tabs" id="tabs"></div>
+    <iframe class="web-view" id="web-view"></iframe>
 
     <script>
-      function loadURL() {
-        var url = document.getElementById("url-input").value;
+      // Maintain an array of opened URLs and corresponding tabs
+      var openedTabs = [];
+
+      // Function to create a new tab and load the specified URL
+      function openTab(url) {
+        var tabId = openedTabs.length;
+        var tabElement = document.createElement("div");
+        tabElement.classList.add("tab");
+        tabElement.innerText = "Tab " + (tabId + 1);
+        tabElement.addEventListener("click", function () {
+          switchTab(tabId);
+        });
+        document.getElementById("tabs").appendChild(tabElement);
+
+        // Deactivate all tabs
+        document.querySelectorAll(".tab").forEach(function (tab) {
+          tab.classList.remove("active");
+        });
+
+        // Activate the newly opened tab
+        tabElement.classList.add("active");
+
+        // Load the URL in the web view
         document.getElementById("web-view").src = url;
+
+        // Store the URL and tab ID in the openedTabs array
+        openedTabs.push({ url: url, tabId: tabId });
       }
-      function loadURL() {
-  var input = document.getElementById("url-input").value;
-  var url;
 
-  if (input.startsWith("http://") || input.startsWith("https://")) {
-    // Treat input as a URL
-    url = input;
-  } else {
-    // Treat input as a search query
-    url = "https://www.google.com/search?q=" + encodeURIComponent(input);
-  }
+      // Function to switch to a different tab
+      function switchTab(tabId) {
+        // Deactivate all tabs
+        document.querySelectorAll(".tab").forEach(function (tab) {
+          tab.classList.remove("active");
+        });
 
-  document.getElementById("web-view").src = url;
-}
-function loadURL() {
-  var input = document.getElementById("url-input").value;
-  var url;
+        // Activate the selected tab
+        document.getElementById("tabs").children[tabId].classList.add("active");
 
-  if (input.startsWith("http://") || input.startsWith("https://")) {
-    // Treat input as a URL
-    url = input;
-  } else {
-    // Treat input as a search query
-    url = "https://www.google.com/search?q=" + encodeURIComponent(input);
-  }
+        // Load the URL of the selected tab in the web view
+        document.getElementById("web-view").src = openedTabs[tabId].url;
+      }
 
-  // Open the search results page in a new tab or window
-  window.open(url, "_blank");
-}
-
+      // Open the initial tab
+      openTab("https://www.google.com");
     </script>
   </body>
 </html>
