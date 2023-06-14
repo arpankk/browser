@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+      }
+      .container {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+      }
+      .header {
+        background-color: #333;
+        padding: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+      }
+      .address-bar {
+        display: flex;
+        align-items: center;
+        background-color: #f1f1f1;
+        padding: 5px;
+        border: 2px solid #ccc;
+        border-radius: 4px;
+      }
+      .address-bar input[type="text"] {
+        flex-grow: 1;
+        height: 26px;
+        border: none;
+        outline: none;
+        padding: 2px;
+        font-size: 14px;
+      }
+      .address-bar button {
+        height: 30px;
+        margin-left: 5px;
+        padding: 0 10px;
+        font-size: 14px;
+        background-color: #4CAF50;
+        border: none;
+        color: #fff;
+        cursor: pointer;
+      }
+      .web-view {
+        flex-grow: 1;
+        border: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>MyWeb Browser</h1>
+      </div>
+      <div class="address-bar">
+        <input type="text" id="url-input" placeholder="Enter URL">
+        <button onclick="loadURL()">Go</button>
+      </div>
+      <iframe class="web-view" id="web-view"></iframe>
+    </div>
+
+    <script>
+      function loadURL() {
+        var url = document.getElementById("url-input").value;
+        document.getElementById("web-view").src = url;
+      }
+    </script>
+  </body>
+</html>
