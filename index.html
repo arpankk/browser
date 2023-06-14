@@ -83,6 +83,21 @@
 
   document.getElementById("web-view").src = url;
 }
+function loadURL() {
+  var input = document.getElementById("url-input").value;
+  var url;
+
+  if (input.startsWith("http://") || input.startsWith("https://")) {
+    // Treat input as a URL
+    url = input;
+  } else {
+    // Treat input as a search query
+    url = "https://www.google.com/search?q=" + encodeURIComponent(input);
+  }
+
+  // Open the search results page in a new tab or window
+  window.open(url, "_blank");
+}
 
     </script>
   </body>
